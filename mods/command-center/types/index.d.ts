@@ -9,6 +9,11 @@ export type Project = {
   next: string
   plan: string[]
   overnight: string[]
+  /** When this project's block was last reported, ISO. */
+  asOf?: string
+  /** The Claude session that owns this project, asked on Pull live. */
+  sessionId?: string
+  source?: string
 }
 
 export type Hub = {
@@ -24,6 +29,7 @@ declare module 'claude-code' {
     'command-center': {
       loaded: Shaped<Loaded>
       open: string | null
+      pullAt: number | null
     }
   }
 }

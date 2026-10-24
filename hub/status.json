@@ -26,7 +26,9 @@
         "Sat 05:57 heartbeat: Webull API call failed (weekend); token fresh, nothing depends on it; recheck Monday",
         "Usage: 1% of weekly plan / 6% of Fable vs caps 20% / 35%; gate OPEN"
       ],
-      "source": "/Users/jackdavey/Downloads/Investing/AutoTrading/ops/status.sh"
+      "source": "/Users/jackdavey/Downloads/Investing/AutoTrading/ops/status.sh",
+      "sessionId": "session_01Y8VGSVcSgjpWrdh8XHS4Dv",
+      "asOf": "2026-10-24T21:20:00Z"
     },
     {
       "id": "agent-city",
@@ -42,7 +44,8 @@
         "Give each agent a log file",
         "Nightly summary into this hub"
       ],
-      "overnight": []
+      "overnight": [],
+      "sessionId": "session_01RWoxGSZsi5C9G1ak2duLno"
     },
     {
       "id": "digital-projects",
@@ -58,7 +61,8 @@
         "Rank by payoff vs. effort",
         "One next step per project"
       ],
-      "overnight": []
+      "overnight": [],
+      "sessionId": "session_01UWD7QGpoR52H1VudBKb6Dz"
     }
   ]
 }
