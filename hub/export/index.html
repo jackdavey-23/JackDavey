@@ -1,0 +1,168 @@
+<style>
+  /* Layout: one narrow column of project cards, built to sit pinned at the right edge of the screen. */
+  #dash-root { --dash-gutter: 12px; }
+  .cc { max-width: 34rem; margin-inline: auto; display: flex; flex-direction: column; gap: var(--cds-gap-md); font-family: var(--font-anthropic-sans); }
+  .cc-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--cds-gap-sm); flex-wrap: wrap; }
+  .cc-title { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; letter-spacing: .01em; }
+  .cc-title span { color: var(--color-fg-muted); }
+  .cc-sub { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .cc-actions { display: flex; gap: var(--cds-gap-xs); }
+  .cc-btn { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-radius: var(--cds-radius); border: 1px solid var(--color-border-line); background: var(--color-panel); color: var(--color-fg); cursor: pointer; }
+  .cc-btn:hover { border-color: var(--color-fg-muted); }
+  .cc-btn:focus-visible, .cc-card-head:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+
+  .cc-focus { border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md) var(--cds-pad-lg); background: var(--color-panel); display: flex; flex-direction: column; gap: var(--cds-gap-xs); }
+  .cc-label { font-size: var(--cds-font-size-caption); text-transform: uppercase; letter-spacing: .12em; color: var(--color-fg-muted); }
+  .cc-focus-text { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); text-wrap: balance; }
+
+  .cc-cards { display: flex; flex-direction: column; gap: var(--cds-gap-sm); }
+  .cc-card { border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-panel); overflow: hidden; }
+  .cc-card[data-status="active"] { box-shadow: inset 3px 0 0 var(--color-ok); }
+  .cc-card[data-status="blocked"] { box-shadow: inset 3px 0 0 var(--color-bad); }
+  .cc-card[data-status="planning"], .cc-card[data-status="paused"] { box-shadow: inset 3px 0 0 var(--color-border-line); }
+  .cc-card-head { all: unset; box-sizing: border-box; width: 100%; cursor: pointer; padding: var(--cds-pad-md) var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-xs); }
+  .cc-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--cds-gap-sm); }
+  .cc-name { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
+  .cc-pill { font-size: var(--cds-font-size-caption); letter-spacing: .1em; text-transform: uppercase; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+  .cc-pill[data-s="active"] { color: var(--color-ok); }
+  .cc-pill[data-s="blocked"] { color: var(--color-bad); }
+  .cc-pill[data-s="planning"], .cc-pill[data-s="paused"], .cc-pill[data-s="done"] { color: var(--color-fg-muted); }
+  .cc-tag { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .cc-bar { height: 6px; border-radius: 999px; background: var(--cds-chart-grid); overflow: hidden; }
+  .cc-bar > i { display: block; height: 100%; border-radius: 999px; background: var(--color-fg); }
+  .cc-meta { display: flex; justify-content: space-between; gap: var(--cds-gap-sm); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; flex-wrap: wrap; }
+  .cc-fresh::before { content: ""; display: inline-block; width: .45rem; height: .45rem; border-radius: 50%; margin-right: 6px; background: currentColor; vertical-align: middle; }
+  .cc-fresh[data-f="ok"] { color: var(--color-ok); }
+  .cc-fresh[data-f="warn"] { color: var(--color-warn); }
+  .cc-fresh[data-f="bad"] { color: var(--color-bad); }
+  .cc-now { display: grid; grid-template-columns: 3.2rem 1fr; gap: var(--cds-gap-sm); align-items: baseline; }
+  .cc-now b, .cc-k { font-size: var(--cds-font-size-caption); letter-spacing: .12em; text-transform: uppercase; color: var(--color-fg-muted); font-weight: 500; }
+  .cc-chev { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+
+  .cc-more { padding: 0 var(--cds-pad-lg) var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-md); border-top: 1px solid var(--color-border-line); padding-top: var(--cds-pad-md); }
+  .cc-more[hidden] { display: none; }
+  .cc-sec { display: flex; flex-direction: column; gap: var(--cds-gap-xs); }
+  .cc-list { margin: 0; padding-left: 1.3rem; display: flex; flex-direction: column; gap: 4px; }
+  .cc-feed { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .cc-feed li { padding-left: 14px; position: relative; }
+  .cc-feed li::before { content: ""; position: absolute; left: 0; top: .6em; width: 6px; height: 6px; border-radius: 50%; background: var(--color-fg-muted); }
+  .cc-empty { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .cc-hint { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); text-align: center; }
+  [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+</style>
+
+<div class="cc">
+  <div class="cc-head">
+    <div>
+      <h1 class="cc-title" id="cc-title">Command Center <span>◆</span></h1>
+      <div class="cc-sub">data from <span data-source="focus" data-field="updated" data-row="0" id="cc-updated" class="dash-skeleton">—</span></div>
+    </div>
+    <div class="cc-actions">
+      <button class="cc-btn" id="cc-refresh" type="button">↻ Refresh</button>
+      <button class="cc-btn" id="cc-collapse" type="button">Collapse all</button>
+    </div>
+  </div>
+
+  <section class="cc-focus" id="cc-focus">
+    <div class="cc-label">⚡ Focus</div>
+    <div class="cc-focus-text dash-skeleton" data-source="focus" data-field="focus" data-row="0" id="cc-focus-text">—</div>
+  </section>
+
+  <div class="cc-cards" id="cc-cards" data-source="projects"></div>
+
+  <div class="cc-hint">For a fresh report from your Mac, tell Claude "pull live".</div>
+</div>
+
+<script>
+(function () {
+  const open = new Set();
+  const asList = (v) => {
+    if (Array.isArray(v)) return v;
+    if (typeof v === 'string' && v.trim().startsWith('[')) { try { return JSON.parse(v); } catch (e) { return [v]; } }
+    return v ? [String(v)] : [];
+  };
+  const agoMs = (ms) => {
+    const min = Math.round(ms / 60000);
+    if (min < 1) return 'just now';
+    if (min < 60) return min + 'm ago';
+    const hr = Math.round(min / 60);
+    return hr < 48 ? hr + 'h ago' : Math.round(hr / 24) + 'd ago';
+  };
+  const fresh = (iso) => {
+    const ms = iso ? Date.now() - Date.parse(iso) : NaN;
+    if (Number.isNaN(ms)) return { f: 'bad', label: 'never reported' };
+    return { f: ms < 6 * 3600e3 ? 'ok' : ms < 24 * 3600e3 ? 'warn' : 'bad', label: 'reported ' + agoMs(ms) };
+  };
+  const STATUS = { active: 'Live', planning: 'Planning', paused: 'Paused', blocked: 'Blocked', done: 'Done' };
+
+  const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+  const mark = (n, field, id) => { n.setAttribute('data-source', 'projects'); n.setAttribute('data-field', field); n.setAttribute('data-where', 'id=' + encodeURIComponent(id)); return n; };
+
+  function card(p) {
+    const id = String(p.id);
+    const c = el('article', 'cc-card'); c.id = 'card-' + id; c.dataset.status = p.status;
+    const head = el('button', 'cc-card-head'); head.type = 'button';
+    head.setAttribute('aria-expanded', open.has(id) ? 'true' : 'false');
+
+    const r1 = el('div', 'cc-row');
+    r1.append(mark(el('span', 'cc-name', p.name), 'name', id));
+    const pill = mark(el('span', 'cc-pill', STATUS[p.status] || p.status), 'status', id); pill.dataset.s = p.status;
+    r1.append(pill);
+    head.append(r1);
+    if (p.tagline) head.append(mark(el('div', 'cc-tag', p.tagline), 'tagline', id));
+
+    const pct = Math.max(0, Math.min(100, Number(p.progress) || 0));
+    const bar = el('div', 'cc-bar'); const fill = el('i'); fill.style.width = pct + '%'; bar.append(fill);
+    head.append(bar);
+
+    const meta = el('div', 'cc-meta');
+    const left = el('span'); left.append(mark(el('span', null, pct + '%'), 'progress', id), document.createTextNode(' · '), mark(el('span', null, p.phase), 'phase', id));
+    const fr = fresh(p.asOf); const f = mark(el('span', 'cc-fresh', fr.label), 'asOf', id); f.dataset.f = fr.f;
+    meta.append(left, f);
+    head.append(meta);
+
+    const now = el('div', 'cc-now'); now.append(el('b', null, 'Now'), mark(el('span', null, p.now), 'now', id));
+    head.append(now);
+    head.append(el('div', 'cc-chev', open.has(id) ? '▾ less' : '▸ next step, plan, overnight'));
+    c.append(head);
+
+    const more = el('div', 'cc-more'); more.hidden = !open.has(id);
+    const s1 = el('div', 'cc-sec'); s1.append(el('div', 'cc-k', 'Next'), mark(el('div', null, p.next), 'next', id));
+    const s2 = el('div', 'cc-sec'); s2.append(el('div', 'cc-k', 'Plan'));
+    const ol = mark(el('ol', 'cc-list'), 'plan', id); asList(p.plan).forEach((t) => ol.append(el('li', null, t))); s2.append(ol);
+    const s3 = el('div', 'cc-sec'); s3.append(el('div', 'cc-k', 'Overnight'));
+    const items = asList(p.overnight);
+    if (items.length) { const ul = mark(el('ul', 'cc-feed'), 'overnight', id); items.forEach((t) => ul.append(el('li', null, t))); s3.append(ul); }
+    else s3.append(el('div', 'cc-empty', 'Nothing logged yet.'));
+    more.append(s1, s2, s3);
+    c.append(more);
+
+    head.addEventListener('click', () => { open.has(id) ? open.delete(id) : open.add(id); draw(); });
+    return c;
+  }
+
+  function draw() {
+    const fx = dash.data('focus');
+    const upd = document.getElementById('cc-updated');
+    const ft = document.getElementById('cc-focus-text');
+    if (fx.status === 'ok' && fx.data[0]) {
+      upd.classList.remove('dash-skeleton'); ft.classList.remove('dash-skeleton');
+      const t = Date.parse(fx.data[0].updated);
+      upd.textContent = Number.isNaN(t) ? String(fx.data[0].updated) : agoMs(Date.now() - t);
+      ft.textContent = fx.data[0].focus;
+    } else if (fx.status !== 'loading') { upd.classList.remove('dash-skeleton'); ft.classList.remove('dash-skeleton'); upd.textContent = '—'; ft.textContent = '—'; }
+
+    const pr = dash.data('projects');
+    const box = document.getElementById('cc-cards');
+    box.replaceChildren();
+    if (pr.status === 'ok') pr.data.forEach((p) => box.append(card(p)));
+    else if (pr.status === 'loading') { const s = el('div', 'cc-card dash-skeleton'); s.style.minHeight = '8rem'; box.append(s); }
+    else box.append(el('div', 'cc-empty', 'Projects failed to load.'));
+  }
+
+  document.getElementById('cc-refresh').addEventListener('click', () => { dash.refresh('projects'); dash.refresh('focus'); });
+  document.getElementById('cc-collapse').addEventListener('click', () => { open.clear(); draw(); });
+  dash.onData(draw);
+  setInterval(draw, 60000);
+})();
+</script>
