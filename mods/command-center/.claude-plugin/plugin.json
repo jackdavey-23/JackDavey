@@ -1,0 +1,6 @@
+{
+  "name": "command-center",
+  "version": "0.1.0",
+  "description": "Side-panel dashboard for Auto Trader, Agent City and Digital Projects, read from hub/status.json",
+  "types": "./types/index.d.ts"
+}

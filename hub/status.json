@@ -1,0 +1,55 @@
+{
+  "updated": "2026-10-24T21:30:00Z",
+  "focus": "Fill in the real status for each project. Ask Claude: \"update my hub\".",
+  "projects": [
+    {
+      "id": "auto-trader",
+      "name": "Auto Trader",
+      "tagline": "Automated trading system",
+      "status": "planning",
+      "progress": 0,
+      "phase": "Not tracked yet",
+      "now": "Point Claude at where the Auto Trader code or notes live.",
+      "next": "Write down the strategy, the broker/API, and paper vs. live.",
+      "plan": [
+        "Define the strategy and risk rules",
+        "Backtest on historical data",
+        "Paper trade",
+        "Go live with small size"
+      ],
+      "overnight": []
+    },
+    {
+      "id": "agent-city",
+      "name": "Agent City",
+      "tagline": "Agents running on their own",
+      "status": "planning",
+      "progress": 0,
+      "phase": "Not tracked yet",
+      "now": "Point Claude at where Agent City runs and where its logs go.",
+      "next": "Have the agents write a nightly log Claude can summarize here.",
+      "plan": [
+        "List the agents and what each one does",
+        "Give each agent a log file",
+        "Nightly summary into this hub"
+      ],
+      "overnight": []
+    },
+    {
+      "id": "digital-projects",
+      "name": "Digital Projects",
+      "tagline": "Everything digital in progress",
+      "status": "planning",
+      "progress": 0,
+      "phase": "Not tracked yet",
+      "now": "List the digital projects so each gets a line here.",
+      "next": "Pick the one project that matters most this week.",
+      "plan": [
+        "Inventory every project",
+        "Rank by payoff vs. effort",
+        "One next step per project"
+      ],
+      "overnight": []
+    }
+  ]
+}
