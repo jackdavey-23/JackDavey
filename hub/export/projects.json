@@ -6,24 +6,23 @@
   "status": "active",
   "progress": 35,
   "phase": "Paper gate: 10 of 60 signals",
-  "now": "Nothing. Recorders are running (keep the Mac on the charger, lid open, at 06:31 and 12:59 MST weekdays)",
-  "next": "Read results/paper_live.md after Friday's push. At 60 signals, compare realized overnight edge to the 16 bp TQQQ / 25 bp SOXL breakeven and decide fund-or-stop",
+  "now": "Nothing. Recorders are running (Mac on charger, lid open, at 06:31 and 12:59 MST weekdays)",
+  "next": "Monday 09:31 ET open tick sells the weekend TQQQ/SOXL lots (Oct 26 is not a turn-of-month day). Read results/paper_live.md after Friday's push",
   "plan": [
    "Reach 60 timestamped paper signals per book (~6 weeks from 10/21)",
    "Settle 60 earnings prints in the implied-move recorder; kill long-event-vol if realized/implied < 0.9",
-   "If paper beats breakeven: Live-Readiness Memo, then fund ~$350 into the Webull margin account",
+   "If paper beats the 16 bp TQQQ / 25 bp SOXL breakeven: Live-Readiness Memo, then fund ~$350 into the Webull margin account",
    "If not: stop; cash was the right answer",
    "Options conviction sleeve (SPEC-20) only after the data says the bar is beatable; 20 pre-registered paper trades before any money"
   ],
   "overnight": [
-   "Thu close tick bought TQQQ 4.86 @ 66.37 and SOXL 3.55 @ 83.60; held over the weekend",
-   "Books: overnight_tom SOXL $303, TQQQ $330 (from $350 each; Wed night gap-down did the damage); tom_window books untouched at $350, first entry Oct 29",
-   "Friday 14:15 job wrote and pushed the first weekly paper report; no missed ticks since Tuesday",
-   "Implied-move recorder: 17 prints logged, 15 settled; implied 9.2% vs realized 4.9%, only 27% beat implied (n too small)",
-   "Sat 05:57 heartbeat: Webull API call failed (weekend); token fresh, nothing depends on it; recheck Monday",
-   "Usage: 1% of weekly plan / 6% of Fable vs caps 20% / 35%; gate OPEN"
+   "Weekend: no ticks (market closed); TQQQ 4.86 @ 66.37 and SOXL 3.55 @ 83.60 still held from Thursday's close",
+   "Books unchanged: overnight_tom SOXL $302.85, TQQQ $329.60; tom_window both $350",
+   "Sun 05:45 heartbeat OK: Webull API back (Saturday's error was a one-off), token fresh, event logger ran 10/24 with 1,389 rows",
+   "Implied-move recorder idle over the weekend; 17 prints logged, 15 settled",
+   "Usage: 3% of weekly plan / 8% of Fable vs caps 20% / 35%; gate OPEN"
   ],
-  "asOf": "2026-10-24T21:20:00Z"
+  "asOf": "2026-10-25T18:05:00Z"
  },
  {
   "id": "agent-city",
